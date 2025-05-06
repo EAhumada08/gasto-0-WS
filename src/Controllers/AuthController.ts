@@ -30,12 +30,33 @@ export class AuthController {
     public static async register(req: Request, res: Response){
         try{
             const newUserEntry = toNewUserEntry(req.body);
-            const newUser = await UserServices.createUser(newUserEntry);
+            const existingUser = await UserServices.getUserByEmail(newUserEntry.correo);
+            if (existingUser) {
+                res.status(400).json({ message: 'El correo ya está registrado.' });
+            } else{
+                
+                const newUser = await UserServices.createUser(newUserEntry);
 
-            res.status(201).json(newUser);
+                res.status(201).json(newUser);
+            }
         } catch (error: unknown) {
             const errorMessage = showError(error);
 
+            res.status(400).send(errorMessage);
+        }
+    }
+
+    public static async validateEmail (req: Request, res: Response){
+        try {
+            const { correo } = req.body;
+            const user = await UserServices.getUserByEmail(correo);
+            if (user) {
+                res.status(200).json({ message: 'El correo ya está registrado.' });
+            } else {
+                res.status(200).json({ message: 'El correo está disponible.' });
+            }
+        } catch (error: unknown) {
+            const errorMessage = showError(error);
             res.status(400).send(errorMessage);
         }
     }
