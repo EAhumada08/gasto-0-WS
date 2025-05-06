@@ -6,7 +6,6 @@ export class UserModel extends BaseModel {
         const query = 'SELECT * FROM usuarios WHERE correo = $1';
         const values = [email];
         const result = await this.query<User>(query, values);
-
         return result.rows[0];
     }
 }

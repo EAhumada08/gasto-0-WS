@@ -1,12 +1,5 @@
 import { NewUserEntry, NonSensitiveUserData, User } from "../interfaces/IUsers";
-
-const isString = (text: unknown): text is string => {
-    return typeof text === 'string' || text instanceof String;
-};
-
-const isNumber = (num: unknown): num is number => {
-    return typeof num === 'number' || num instanceof Number;
-};
+import { isString, isNumber } from "./commonParsers";
 
 const parseName = (name: unknown): string => {
     if (!isString(name)) {

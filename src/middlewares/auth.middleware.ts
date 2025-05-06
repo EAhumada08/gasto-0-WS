@@ -7,14 +7,17 @@ export const authMiddleware = (req: AuthRequest, res: Response, next: NextFuncti
 
     if (!token) {
         res.status(401).json({ message: 'No autorizado' })
-    }
+    } else {
+        
 
     try {
         const decoded = AuthServices.verifyToken(token);
-        req.user = decoded;
+        req.user = decoded as any; // Cast to AuthRequest type
         next();
     } catch (error) {
         res.status(401).json({ message: 'Token no valido' })
+        console.log('error')
+    }
     }
     
 }

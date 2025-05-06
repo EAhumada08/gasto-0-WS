@@ -30,7 +30,7 @@ export abstract class BaseModel {
         return result.rows;
     }
 
-    public static async create<T extends QueryResultRow>(table:string, data: T): Promise<T> {
+    public static async create<T extends QueryResultRow>(table:string, data: any): Promise<T> {
         const columns = Object.keys(data).join(", ");
         const values = Object.values(data);
         const placeholders = values.map((_, index) => `$${index + 1}`).join(", ");
@@ -42,8 +42,8 @@ export abstract class BaseModel {
 
           return result.rows[0];
         } catch (error) {
-          console.log("Error creando usuario:", error);
-          throw new Error('Error creando usuario');
+          console.log(`Error creando ${table}:`, error);
+          throw new Error(`Error creando ${table}`);
         }
         
     }

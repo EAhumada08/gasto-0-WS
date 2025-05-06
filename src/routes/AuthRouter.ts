@@ -9,5 +9,6 @@ BaseModel.initializePool(config);
 
 router.post("/login", AuthController.login);
 router.post("/register", AuthController.register);
+router.post("/validateEmail", AuthController.validateEmail);
 
 export default router;

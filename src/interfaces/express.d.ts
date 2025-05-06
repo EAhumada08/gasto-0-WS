@@ -1,6 +1,6 @@
 import { Request } from "express";
-import { User } from "./IUsers";
+import { NonSensitiveUserData, User } from "./IUsers";
 
 export interface AuthRequest extends Request {
-    user?:any;
+    user?: NonSensitiveUserData;
 }
