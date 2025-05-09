@@ -21,4 +21,21 @@ export class ExpenseController {
             res.status(400).send(errorMessage);
         }
     }
+
+    static async getExpensesByUserId(req: AuthRequest, res: Response) {
+        try {
+            const userId = req.user?.id;
+            const expenses = await ExpensesService.getExpensesByUserId(userId as string);
+
+            if (!expenses || expenses.length === 0) {
+                res.status(404).json({ message: "No se encontraron gastos para este usuario" });
+            } else {
+                res.status(200).json({ message: "Gastos obtenidos correctamente", expenses });
+            }
+        } catch (error) {
+            const errorMessage = showError(error);
+
+            res.status(400).send(errorMessage);
+        }
+    }
 }
