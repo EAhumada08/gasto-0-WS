@@ -7,7 +7,7 @@ import { showError } from "../utils/utilFunctions";
 export class ExpenseController {
     static async addExpense(req: AuthRequest, res: Response) {
         try {
-            const expenseToAdd  = { usuario_id: req.user?.id, ...req.body} as NewExpenseEntry;
+            const expenseToAdd  = { usuario_id: req.user.id, ...req.body} as NewExpenseEntry;
             const newExpense = await ExpensesService.addExpense(expenseToAdd);
 
             if(!newExpense) {
@@ -24,9 +24,9 @@ export class ExpenseController {
 
     static async getExpensesByUserId(req: AuthRequest, res: Response) {
         try {
-            const userId = req.user?.id;
-            const expenses = await ExpensesService.getExpensesByUserId(userId as string);
-
+            const userId = req.user.id;
+                const expenses = await ExpensesService.getExpensesByUserId(userId);
+            
             if (!expenses || expenses.length === 0) {
                 res.status(404).json({ message: "No se encontraron gastos para este usuario" });
             } else {

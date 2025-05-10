@@ -1,15 +1,20 @@
+import { z } from "zod";
+import { UserSchema, UserSchemaWithoutId, UserSchemaWithoutPassword } from "../Schemas/UserSchemas";
+
 type UUID = `${string}-${string}-${string}-${string}-${string}`;
 
 //export type Correo = `${string}@${string}.${string}`;
 
 export interface User {
-    id?: UUID;
+    id: UUID;
     nombre: string;
     edad: number;
     correo: string;
-    password?: string;
+    password: string;
 }
 
-export type NewUserEntry = Omit<User, "id">
+export type IUser = z.infer<typeof UserSchema>;
 
-export type NonSensitiveUserData = Omit<User, "password">;
+export type NewUserEntry = z.infer<typeof UserSchemaWithoutId>;
+
+export type NonSensitiveUserData = z.infer<typeof UserSchemaWithoutPassword>;
