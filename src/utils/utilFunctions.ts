@@ -1,9 +1,9 @@
 export const showError = (error: unknown): string => {
-    let errorMessage = 'Algo salio mal.';
+  let errorMessage = 'Algo salio mal.'
 
-    if (error instanceof Error) {
-        return errorMessage += 'Error: ' + error.message;    
-    } 
+  if (error instanceof Error) {
+    return errorMessage += 'Error: ' + error.message
+  }
 
-    return errorMessage;
+  return errorMessage
 }

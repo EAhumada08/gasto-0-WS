@@ -1,24 +1,22 @@
-import { Response, NextFunction } from "express"
-import { AuthServices} from "../Services/Auth.Services"
-import { AuthRequest } from "../interfaces/express"
-import { toNonSensitiveUserData } from "../Schemas/UserSchemas"
+import { type Response, type NextFunction } from 'express'
+import { AuthServices } from '../Services/Auth.Services'
+import { type AuthRequest } from '../interfaces/express'
+import { toNonSensitiveUserData } from '../Schemas/UserSchemas'
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction) => {
-    const token = req.headers['authorization']?.split(' ')[1] as string
+  const authServices: AuthServices = new AuthServices()
+  const token = req.headers.authorization?.split(' ')[1]
 
-    if (!token) {
-        res.status(401).json({ message: 'No autorizado' })
-    } else {
-        
-
+  if (token === null || token === undefined) {
+    res.status(401).json({ message: 'No autorizado' })
+  } else {
     try {
-        const decoded = AuthServices.verifyToken(token);
-        req.user = toNonSensitiveUserData(decoded); 
-        next();
+      const decoded = authServices.verifyToken(token)
+      req.user = toNonSensitiveUserData(decoded)
+      next()
     } catch (error) {
-        res.status(401).json({ message: 'Token no valido' })
-        console.log('error')
+      console.log(error)
+      res.status(401).json({ message: 'Token no valido' })
     }
-    }
-    
+  }
 }

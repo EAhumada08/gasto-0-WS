@@ -1,41 +1,41 @@
-import { Response } from "express";
-import { AuthRequest } from "../interfaces/express";
-import { ExpensesService } from "../Services/ExpensesService";
-import { NewExpenseEntry } from "../interfaces/Expenses";
-import { showError } from "../utils/utilFunctions";
+import { type Response } from 'express'
+import { type AuthRequest } from '../interfaces/express'
+import { ExpensesService } from '../Services/ExpensesService'
+import { type NewExpenseEntry } from '../interfaces/Expenses'
+import { showError } from '../utils/utilFunctions'
+import { toNewExpenseEntry } from '../Schemas/ExpenseSchemas'
 
 export class ExpenseController {
-    static async addExpense(req: AuthRequest, res: Response) {
-        try {
-            const expenseToAdd  = { usuario_id: req.user.id, ...req.body} as NewExpenseEntry;
-            const newExpense = await ExpensesService.addExpense(expenseToAdd);
+  private readonly expensesService: ExpensesService = new ExpensesService()
+  addExpense = async (req: AuthRequest, res: Response) => {
+    try {
+      const expenseToAdd: NewExpenseEntry = toNewExpenseEntry({ usuario_id: req.user?.id, ...req.body })
+      const newExpense = await this.expensesService.addExpense(expenseToAdd)
 
-            if(!newExpense) {
-                res.status(400).json({ message: "Error al agregar el gasto" });
-            } else{ 
-                res.status(201).json({ message: "Gasto agregado correctamente", newExpense });
-            }
-        } catch (error: unknown) {
-            const errorMessage = showError(error);
+      res.status(201).json({ message: 'Gasto agregado correctamente', newExpense })
+    } catch (error: unknown) {
+      const errorMessage = showError(error)
 
-            res.status(400).send(errorMessage);
-        }
+      res.status(400).send(errorMessage)
     }
+  }
 
-    static async getExpensesByUserId(req: AuthRequest, res: Response) {
-        try {
-            const userId = req.user.id;
-                const expenses = await ExpensesService.getExpensesByUserId(userId);
-            
-            if (!expenses || expenses.length === 0) {
-                res.status(404).json({ message: "No se encontraron gastos para este usuario" });
-            } else {
-                res.status(200).json({ message: "Gastos obtenidos correctamente", expenses });
-            }
-        } catch (error) {
-            const errorMessage = showError(error);
+  getExpensesByUserId = async (req: AuthRequest, res: Response) => {
+    try {
+      const userId = req.user?.id
+      if (userId !== undefined) {
+        const expenses = await this.expensesService.getExpensesByUserId(userId)
 
-            res.status(400).send(errorMessage);
+        if (expenses.length < 1) {
+          res.status(404).json({ message: 'No se encontraron gastos para este usuario' })
+        } else {
+          res.status(200).json({ message: 'Gastos obtenidos correctamente', expenses })
         }
+      }
+    } catch (error) {
+      const errorMessage = showError(error)
+
+      res.status(400).send(errorMessage)
     }
+  }
 }

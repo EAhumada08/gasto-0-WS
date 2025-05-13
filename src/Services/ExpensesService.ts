@@ -1,13 +1,14 @@
-import { Expense, NewExpenseEntry } from "../interfaces/Expenses";
-import { ExpenseModel } from "../Models/ExpenseModel";
+import { type ExpenseToShow, type Expense, type NewExpenseEntry } from '../interfaces/Expenses'
+import { ExpenseModel } from '../Models/ExpenseModel'
 
 export class ExpensesService {
-    static async addExpense(expenseToAdd: NewExpenseEntry) {
-        return await ExpenseModel.create<Expense>('gastos', expenseToAdd);
-    }
+  private readonly expenseRepository = new ExpenseModel()
 
-    static async getExpensesByUserId(userId: string) {
-        return await ExpenseModel.getExpensesByUserId(userId);
-    }
+  public async addExpense (expenseToAdd: NewExpenseEntry) {
+    return await this.expenseRepository.create<Expense>('gastos', expenseToAdd)
+  }
 
+  public async getExpensesByUserId (userId: string) {
+    return await this.expenseRepository.getExpensesByUserId<ExpenseToShow>(userId)
+  }
 }

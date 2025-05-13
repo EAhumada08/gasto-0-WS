@@ -1,13 +1,11 @@
-import { Router } from "express";
-import { UserController } from "../Controllers/UserController";
-import { config } from "../config";
-import { UserModel } from "../Models/UserModel";
+import { Router } from 'express'
+import { UserController } from '../Controllers/UserController'
 
-const router: Router = Router();
+const router: Router = Router()
 
-UserModel.initializePool(config);
+const userController: UserController = new UserController()
 
-router.get("/", UserController.getAllUsers);
-router.post('/', UserController.getUserByEmail);
+router.get('/', userController.getAllUsers)
+router.post('/', userController.getUserByEmail)
 
-export default router;
+export default router

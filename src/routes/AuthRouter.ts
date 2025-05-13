@@ -1,14 +1,11 @@
-import { Router } from "express";
-import { AuthController } from "../Controllers/AuthController";
-import { BaseModel } from "../Models/BaseModel";
-import { config } from "../config";
+import { Router } from 'express'
+import { AuthController } from '../Controllers/AuthController'
 
-const router = Router();
+const router = Router()
 
-BaseModel.initializePool(config);
+const authController: AuthController = new AuthController()
 
-router.post("/login", AuthController.login);
-router.post("/register", AuthController.register);
-router.post("/validateEmail", AuthController.validateEmail);
+router.post('/login', authController.login)
+router.post('/register', authController.register)
 
-export default router;
+export default router
