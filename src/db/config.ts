@@ -9,7 +9,7 @@ export interface Config {
 export const config: Config = {
   user: 'app_gasto0',
   password: 'gasto0123',
-  host: '192.168.0.5',
+  host: '192.168.0.21',
   port: 5432,
   database: 'gasto0'
 }

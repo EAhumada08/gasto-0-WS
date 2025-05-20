@@ -10,6 +10,7 @@ export class UserModel extends BaseModel {
 
       return result.rows[0]
     } catch (error) {
+      console.log(error)
       throw new Error('Error al obtener el usuario por correo')
     }
   }

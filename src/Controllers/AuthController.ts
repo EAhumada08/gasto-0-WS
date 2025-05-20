@@ -48,7 +48,9 @@ export class AuthController {
       } else {
         const newUser = await this.userServices.createUser(newUserEntry)
 
-        res.status(201).json(newUser)
+        const nonSensitiveUserData = toNonSensitiveUserData(newUser)
+
+        res.status(201).json(nonSensitiveUserData)
       }
     } catch (error: unknown) {
       const errorMessage = showError(error)
